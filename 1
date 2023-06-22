@@ -1,0 +1,45 @@
+const tus = require('tus-node-server');
+
+// Create a new instance of the TUS server
+
+const server = new tus.Server();
+
+// Define the POST endpoint for creating a new file upload
+
+server.datastore = new tus.FileStore({
+
+  directory: '/path/to/file/storage' // Specify the directory where uploaded files will be stored
+
+});
+
+// Define the PATCH endpoint for updating an upload
+
+server.patch('/files/:id', async (req, res) => {
+
+  const fileId = req.params.id;
+
+  const offset = parseInt(req.get('upload-offset'), 10); // Get the offset value from the request headers
+
+  // Perform any necessary processing or validation with the offset value
+
+  
+
+  // Return the updated offset value in the response
+
+  res.set('upload-offset', offset.toString());
+
+  res.end();
+
+});
+
+// Start the TUS server on a specified port
+
+const host = 'localhost';
+
+const port = 8080;
+
+server.listen({ host, port }, () => {
+
+  console.log(`TUS server listening on ${host}:${port}`);
+
+});
